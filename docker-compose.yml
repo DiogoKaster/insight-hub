@@ -1,0 +1,76 @@
+services:
+  insighthub-db:
+    build:
+      dockerfile: docker/postgres.Dockerfile
+      context: .
+    image: postgres.local:18
+    container_name: insighthub-db
+    restart: no
+    hostname: dev
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dev_insighthub
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - insighthub-db:/var/lib/postgresql
+    networks:
+      - dev-insighthub
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready --quiet --username=postgres --dbname=postgres || exit 1']
+      interval: 10s
+      retries: 5
+      timeout: 10s
+      start_period: 15s
+
+  insighthub-redis:
+    build:
+      dockerfile: docker/redis.Dockerfile
+      context: .
+    image: redis.local:8
+    container_name: insighthub-redis
+    restart: no
+    hostname: dev
+    ports:
+      - '127.0.0.1:6379:6379'
+    networks:
+      - dev-insighthub
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli --raw incr ping || exit 1']
+      interval: 10s
+      retries: 5
+      timeout: 10s
+      start_period: 15s
+
+  insighthub-mailpit:
+    build:
+      dockerfile: docker/mailpit.Dockerfile
+      context: .
+    image: mailpit.local:1
+    container_name: insighthub-mailpit
+    restart: no
+    hostname: dev
+    ports:
+      - '127.0.0.1:1025:1025'
+      - '127.0.0.1:8025:8025'
+    networks:
+      - dev-insighthub
+    healthcheck:
+      test: ['CMD', '/mailpit', 'readyz']
+      interval: 10s
+      retries: 5
+      timeout: 10s
+      start_period: 10s
+
+volumes:
+  insighthub-db:
+    name: insighthub-db
+
+networks:
+  dev-insighthub:
+    name: dev-insighthub
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: dev-insighthub
+      com.docker.network.bridge.host_binding_ipv4: '127.0.0.1'
