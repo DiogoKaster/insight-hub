@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db9741c20814bfee4b085162c0f4ec73",
+    "content-hash": "2a8a132796d14a6cda3854a13d049448",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2670,6 +2670,42 @@
             "autoload-dev": {
                 "psr-4": {
                     "InsightHub\\Panel\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "insighthub/repository",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/repository",
+                "reference": "988af4b2ad5af704e9bf6ba88a5184ad70fe444a"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "InsightHub\\Repository\\RepositoryServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "InsightHub\\Repository\\": "src/",
+                    "InsightHub\\Repository\\Database\\Factories\\": "database/factories/",
+                    "InsightHub\\Repository\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "InsightHub\\Repository\\Tests\\": "tests/"
                 }
             },
             "license": [

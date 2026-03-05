@@ -16,6 +16,6 @@ final class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertOk();
+        $response->assertRedirect();
     }
 }

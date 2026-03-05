@@ -1,27 +1,27 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "insighthub/panel",
+    "name": "insighthub/repository",
     "description": "",
     "type": "library",
     "version": "1.0.0",
     "license": "proprietary",
     "autoload": {
         "psr-4": {
-            "InsightHub\\Panel\\": "src/",
-            "InsightHub\\Panel\\Database\\Factories\\": "database/factories/",
-            "InsightHub\\Panel\\Database\\Seeders\\": "database/seeders/"
+            "InsightHub\\Repository\\": "src/",
+            "InsightHub\\Repository\\Database\\Factories\\": "database/factories/",
+            "InsightHub\\Repository\\Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "InsightHub\\Panel\\Tests\\": "tests/"
+            "InsightHub\\Repository\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
-                "InsightHub\\Panel\\PanelServiceProvider"
+                "InsightHub\\Repository\\RepositoryServiceProvider"
             ]
         }
     }
