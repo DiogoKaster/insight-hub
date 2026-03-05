@@ -1,0 +1,27 @@
+{
+    "name": "insighthub/panel",
+    "description": "",
+    "type": "library",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "InsightHub\\Panel\\": "src/",
+            "InsightHub\\Panel\\Database\\Factories\\": "database/factories/",
+            "InsightHub\\Panel\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "InsightHub\\Panel\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "InsightHub\\Panel\\PanelServiceProvider"
+            ]
+        }
+    }
+}

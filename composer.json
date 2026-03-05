@@ -10,6 +10,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
+        "filament/filament": "^5.2",
+        "insighthub/panel": ">=1",
+        "internachi/modular": "dev-main#ad95fe9",
         "laravel/framework": "^12.53",
         "laravel/tinker": "^2.11.1"
     },
@@ -24,6 +27,7 @@
         "pestphp/pest": "^4.4.1",
         "pestphp/pest-plugin-faker": "^4.0",
         "pestphp/pest-plugin-laravel": "^4.1",
+        "pestphp/pest-plugin-livewire": "^4.0",
         "phpstan/extension-installer": "^1.4.3",
         "rector/rector": "^2.3.8"
     },
@@ -32,7 +36,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "bootstrap/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -56,8 +63,8 @@
         "test:pint": "vendor/bin/pint --test --parallel",
         "rector": "vendor/bin/rector process",
         "test:rector": "vendor/bin/rector process --dry-run",
-        "phpstan": "vendor/bin/phpstan analyse --ansi",
-        "test:phpstan": "vendor/bin/phpstan analyse --ansi",
+        "phpstan": "vendor/bin/phpstan analyse --ansi --memory-limit=512M",
+        "test:phpstan": "vendor/bin/phpstan analyse --ansi --memory-limit=512M",
         "check": [
             "@test:rector",
             "@test:pint",
@@ -69,7 +76,9 @@
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade",
+            "@php artisan modules:sync --no-phpunit --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -102,6 +111,19 @@
             "phpstan/extension-installer": true
         }
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "app-modules/*",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:gvieira18/modular"
+        }
+    ]
 }

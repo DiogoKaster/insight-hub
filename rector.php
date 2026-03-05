@@ -23,6 +23,11 @@ return RectorConfig::configure()
         __DIR__.'/database',
         __DIR__.'/routes',
         __DIR__.'/tests',
+        __DIR__.'/app-modules/*/src',
+        __DIR__.'/app-modules/*/config',
+        __DIR__.'/app-modules/*/database',
+        __DIR__.'/app-modules/*/routes',
+        __DIR__.'/app-modules/*/tests',
     ])
     ->withSkip([__DIR__.'/bootstrap/cache'])
     ->withCache(cacheDirectory: __DIR__.'/.rector.result.cache', cacheClass: FileCacheStorage::class)

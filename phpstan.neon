@@ -1,4 +1,5 @@
 includes:
+    - phpstan.modules.php
     - phpstan.ignore.neon
 
 parameters:

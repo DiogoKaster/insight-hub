@@ -29,14 +29,14 @@ test-rector: ## Run Rector in test mode
 
 .PHONY: phpstan
 phpstan: ## Run PHPStan
-	@$(CURDIR)/vendor/bin/phpstan analyse --ansi
+	@$(CURDIR)/vendor/bin/phpstan analyse --ansi --memory-limit=512M
 
 .PHONY: p
 p: phpstan ## Alias for phpstan
 
 .PHONY: test-phpstan
 test-phpstan: ## Run PHPStan in test mode
-	@$(CURDIR)/vendor/bin/phpstan analyse --ansi
+	@$(CURDIR)/vendor/bin/phpstan analyse --ansi --memory-limit=512M
 
 .PHONY: format
 format: rector pint ## Run Pint and Rector and try to fixes the source code
@@ -64,6 +64,10 @@ test-unit: ## Run unit tests
 .PHONY: test-feature
 test-feature: ## Run feature tests
 	@APP_ENV=testing $(CURDIR)/vendor/bin/pest --parallel --compact --group=feature
+
+.PHONY: modules-sync
+modules-sync: ## Sync interNACHI modules
+	@php artisan modules:sync --no-phpunit --ansi
 
 .PHONY: migrate-fresh
 migrate-fresh: ## Run migrations and seed the database
