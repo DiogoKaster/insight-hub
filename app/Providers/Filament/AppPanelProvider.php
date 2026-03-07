@@ -21,6 +21,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use InsightHub\Panel\Filament\Pages\Auth\Login;
 use InsightHub\Repository\Models\Repository;
 
 final class AppPanelProvider extends PanelProvider
@@ -33,7 +34,7 @@ final class AppPanelProvider extends PanelProvider
             ->id($this->panelEnum->value)
             ->path($this->panelEnum->getPath())
             ->tenant(Repository::class)
-            ->login()
+            ->login(Login::class)
             ->colors(['primary' => Color::Indigo])
             ->viteTheme(sprintf('resources/css/filament/%s/theme.css', $this->panelEnum->value))
             ->discoverResources(in: modules_path('panel/src/Filament/Resources'), for: 'InsightHub\\Panel\\Filament\\Resources')
