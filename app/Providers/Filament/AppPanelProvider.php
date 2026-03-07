@@ -22,7 +22,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use InsightHub\Panel\Filament\Pages\Auth\Login;
-use InsightHub\Repository\Models\Repository;
+use InsightHub\Panel\Filament\Pages\Tenancy\RegisterProject;
+use InsightHub\Project\Models\Project;
 
 final class AppPanelProvider extends PanelProvider
 {
@@ -33,7 +34,8 @@ final class AppPanelProvider extends PanelProvider
         return $panel
             ->id($this->panelEnum->value)
             ->path($this->panelEnum->getPath())
-            ->tenant(Repository::class)
+            ->tenant(Project::class)
+            ->tenantRegistration(RegisterProject::class)
             ->login(Login::class)
             ->colors(['primary' => Color::Indigo])
             ->viteTheme(sprintf('resources/css/filament/%s/theme.css', $this->panelEnum->value))

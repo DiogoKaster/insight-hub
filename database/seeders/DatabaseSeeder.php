@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use InsightHub\Project\Models\Project;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,6 +25,11 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Admin',
                 'password' => Hash::make('password'),
             ],
+        );
+
+        Project::firstOrCreate(
+            ['name' => 'Default Project'],
+            ['description' => 'My first project'],
         );
     }
 }
