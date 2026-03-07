@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace InsightHub\Admin\Filament\Resources;
 
+use BackedEnum;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -17,6 +19,8 @@ use InsightHub\Repository\Models\Repository;
 class RepositoryResource extends Resource
 {
     protected static ?string $model = Repository::class;
+
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::BookOpen;
 
     public static function form(Schema $schema): Schema
     {
