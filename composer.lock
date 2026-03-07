@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb2284022527edec4b017bad92cce624",
+    "content-hash": "91ac50910873069f4bb2a092d948c307",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2645,6 +2645,35 @@
             "time": "2025-08-22T14:27:06+00:00"
         },
         {
+            "name": "insighthub/admin",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/admin",
+                "reference": "9150e6a4b78796cfed0e8cead271511211004d04"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "InsightHub\\Admin\\AdminServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "InsightHub\\Admin\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
             "name": "insighthub/panel",
             "version": "1.0.0",
             "dist": {
@@ -2670,41 +2699,6 @@
             "autoload-dev": {
                 "psr-4": {
                     "InsightHub\\Panel\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "proprietary"
-            ],
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
-        },
-        {
-            "name": "insighthub/project",
-            "version": "1.0.0",
-            "dist": {
-                "type": "path",
-                "url": "app-modules/project",
-                "reference": "1eb6561be444e1af919dd348635ebb3c337758dc"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "InsightHub\\Project\\ProjectServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "InsightHub\\Project\\": "src/",
-                    "InsightHub\\Project\\Database\\Factories\\": "database/factories/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "InsightHub\\Project\\Tests\\": "tests/"
                 }
             },
             "license": [

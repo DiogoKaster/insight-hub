@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace InsightHub\Panel\Filament\Resources\RepositoryResource\Pages;
+namespace InsightHub\Admin\Filament\Resources\RepositoryResource\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
-use InsightHub\Panel\Filament\Resources\RepositoryResource;
+use InsightHub\Admin\Filament\Resources\RepositoryResource;
 
 class CreateRepository extends CreateRecord
 {

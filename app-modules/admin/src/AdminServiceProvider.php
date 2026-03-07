@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace InsightHub\Project;
+namespace InsightHub\Admin;
 
 use Illuminate\Support\ServiceProvider;
 
-class ProjectServiceProvider extends ServiceProvider
+class AdminServiceProvider extends ServiceProvider
 {
     public function register(): void {}
 

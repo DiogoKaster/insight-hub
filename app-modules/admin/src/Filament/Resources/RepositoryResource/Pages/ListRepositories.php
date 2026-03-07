@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace InsightHub\Panel\Filament\Resources\RepositoryResource\Pages;
+namespace InsightHub\Admin\Filament\Resources\RepositoryResource\Pages;
 
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use InsightHub\Panel\Filament\Resources\RepositoryResource;
+use InsightHub\Admin\Filament\Resources\RepositoryResource;
 
 class ListRepositories extends ListRecords
 {

@@ -7,9 +7,7 @@ namespace InsightHub\Repository\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use InsightHub\Project\Models\Project;
 use InsightHub\Repository\Database\Factories\RepositoryFactory;
 
 class Repository extends Model
@@ -19,7 +17,6 @@ class Repository extends Model
     use HasUuids;
 
     protected $fillable = [
-        'project_id',
         'github_id',
         'owner_login',
         'name',
@@ -35,14 +32,6 @@ class Repository extends Model
         'github_created_at',
         'github_updated_at',
     ];
-
-    /**
-     * @return BelongsTo<Project, $this>
-     */
-    public function project(): BelongsTo
-    {
-        return $this->belongsTo(Project::class);
-    }
 
     /**
      * @return HasMany<PullRequest, $this>

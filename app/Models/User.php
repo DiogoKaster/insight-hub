@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use InsightHub\Project\Models\Project;
+use InsightHub\Repository\Models\Repository;
 
 class User extends Authenticatable implements FilamentUser, HasTenants
 {
@@ -48,10 +48,10 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         return true;
     }
 
-    /** @return Collection<int, Project> */
+    /** @return Collection<int, Repository> */
     public function getTenants(Panel $panel): Collection
     {
-        return Project::all();
+        return Repository::all();
     }
 
     public function canAccessTenant(Model $tenant): bool

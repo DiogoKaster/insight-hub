@@ -11,7 +11,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('repositories', function (Blueprint $table): void {
-            $table->foreignUuid('project_id')->nullable()->constrained()->nullOnDelete()->after('id');
             $table->unsignedBigInteger('github_id')->nullable()->change();
             $table->string('html_url')->nullable()->change();
             $table->string('default_branch')->nullable()->change();
@@ -23,8 +22,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('repositories', function (Blueprint $table): void {
-            $table->dropForeign(['project_id']);
-            $table->dropColumn('project_id');
             $table->unsignedBigInteger('github_id')->nullable(false)->change();
             $table->string('html_url')->nullable(false)->change();
             $table->string('default_branch')->nullable(false)->change();

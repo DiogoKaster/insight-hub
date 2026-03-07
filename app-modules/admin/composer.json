@@ -1,26 +1,20 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "insighthub/project",
+    "name": "insighthub/admin",
     "description": "",
     "type": "library",
     "version": "1.0.0",
     "license": "proprietary",
     "autoload": {
         "psr-4": {
-            "InsightHub\\Project\\": "src/",
-            "InsightHub\\Project\\Database\\Factories\\": "database/factories/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "InsightHub\\Project\\Tests\\": "tests/"
+            "InsightHub\\Admin\\": "src/"
         }
     },
     "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
-                "InsightHub\\Project\\ProjectServiceProvider"
+                "InsightHub\\Admin\\AdminServiceProvider"
             ]
         }
     }

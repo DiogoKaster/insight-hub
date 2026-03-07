@@ -9,12 +9,9 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -22,29 +19,19 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use InsightHub\Panel\Filament\Pages\Auth\Login;
-use InsightHub\Panel\Filament\Pages\Tenancy\RegisterRepository;
-use InsightHub\Repository\Models\Repository;
 
-final class AppPanelProvider extends PanelProvider
+final class AdminPanelProvider extends PanelProvider
 {
-    private FilamentPanel $panelEnum = FilamentPanel::App;
+    private FilamentPanel $panelEnum = FilamentPanel::Admin;
 
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->id($this->panelEnum->value)
             ->path($this->panelEnum->getPath())
-            ->tenant(Repository::class)
-            ->tenantRegistration(RegisterRepository::class)
             ->login(Login::class)
             ->colors(['primary' => Color::Indigo])
-            ->viteTheme(sprintf('resources/css/filament/%s/theme.css', $this->panelEnum->value))
-            ->discoverResources(in: modules_path('panel/src/Filament/Resources'), for: 'InsightHub\\Panel\\Filament\\Resources')
-            ->discoverPages(in: modules_path('panel/src/Filament/Pages'), for: 'InsightHub\\Panel\\Filament\\Pages')
-            ->discoverWidgets(in: modules_path('panel/src/Filament/Widgets'), for: 'InsightHub\\Panel\\Filament\\Widgets')
-            ->discoverClusters(in: modules_path('panel/src/Filament/Clusters'), for: 'InsightHub\\Panel\\Filament\\Clusters')
-            ->pages([Dashboard::class])
-            ->widgets([AccountWidget::class, FilamentInfoWidget::class])
+            ->discoverResources(in: modules_path('admin/src/Filament/Resources'), for: 'InsightHub\\Admin\\Filament\\Resources')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
