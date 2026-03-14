@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 use InsightHub\Repository\Database\Factories\RepositoryFactory;
 
 class Repository extends Model
@@ -20,6 +21,7 @@ class Repository extends Model
         'github_id',
         'owner_login',
         'name',
+        'slug',
         'full_name',
         'description',
         'html_url',
@@ -32,6 +34,11 @@ class Repository extends Model
         'github_created_at',
         'github_updated_at',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     /**
      * @return HasMany<PullRequest, $this>
@@ -63,6 +70,15 @@ class Repository extends Model
     public function labels(): HasMany
     {
         return $this->hasMany(Label::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Repository $repository): void {
+            if (blank($repository->slug)) {
+                $repository->slug = Str::slug($repository->name);
+            }
+        });
     }
 
     protected static function newFactory(): RepositoryFactory

@@ -10,6 +10,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Pages\Tenancy\RegisterTenant;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use InsightHub\Repository\Models\Repository;
 
 class RegisterRepository extends RegisterTenant
@@ -23,7 +24,12 @@ class RegisterRepository extends RegisterTenant
     {
         return $schema->components([
             TextInput::make('name')
-                ->required(),
+                ->required()
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (callable $set, ?string $state) => $set('slug', Str::slug((string) $state))),
+            TextInput::make('slug')
+                ->required()
+                ->unique(table: 'repositories'),
             TextInput::make('html_url')
                 ->label('GitHub URL')
                 ->placeholder('https://github.com/owner/repo'),

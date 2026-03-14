@@ -17,6 +17,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use InsightHub\Admin\Filament\Resources\RepositoryResource\Pages\CreateRepository;
 use InsightHub\Admin\Filament\Resources\RepositoryResource\Pages\EditRepository;
 use InsightHub\Admin\Filament\Resources\RepositoryResource\Pages\ListRepositories;
@@ -32,7 +33,12 @@ class RepositoryResource extends Resource
     {
         return $schema->components([
             TextInput::make('name')
-                ->required(),
+                ->required()
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (callable $set, ?string $state) => $set('slug', Str::slug((string) $state))),
+            TextInput::make('slug')
+                ->required()
+                ->unique(ignoreRecord: true),
             TextInput::make('html_url')
                 ->label('GitHub URL')
                 ->placeholder('https://github.com/owner/repo'),
@@ -55,7 +61,7 @@ class RepositoryResource extends Resource
                 Action::make('manage')
                     ->label('Manage')
                     ->icon(Heroicon::ArrowTopRightOnSquare)
-                    ->url(fn (Repository $record): string => route('filament.app.pages.dashboard', ['tenant' => $record->getKey()]))
+                    ->url(fn (Repository $record): string => route('filament.app.pages.dashboard', ['tenant' => $record->getRouteKey()]))
                     ->openUrlInNewTab(),
                 EditAction::make(),
                 DeleteAction::make(),

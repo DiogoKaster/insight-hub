@@ -15,6 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('github_id')->nullable()->unique();
             $table->string('owner_login')->nullable();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->string('full_name')->nullable()->unique();
             $table->text('description')->nullable();
             $table->string('html_url')->nullable();
