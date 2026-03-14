@@ -54,3 +54,24 @@ it('belongs to many labels', function (): void {
 
     expect($pr->labels)->toHaveCount(2);
 });
+
+it('fills and casts analytics fields', function (): void {
+    $pr = PullRequest::factory()->create([
+        'draft' => true,
+        'additions' => 42,
+        'deletions' => 10,
+        'changed_files' => 5,
+        'commits_count' => 3,
+        'comments_count' => 7,
+        'review_comments_count' => 2,
+    ]);
+
+    $fresh = PullRequest::find($pr->id);
+    expect($fresh->draft)->toBeTrue()
+        ->and($fresh->additions)->toBe(42)
+        ->and($fresh->deletions)->toBe(10)
+        ->and($fresh->changed_files)->toBe(5)
+        ->and($fresh->commits_count)->toBe(3)
+        ->and($fresh->comments_count)->toBe(7)
+        ->and($fresh->review_comments_count)->toBe(2);
+});
