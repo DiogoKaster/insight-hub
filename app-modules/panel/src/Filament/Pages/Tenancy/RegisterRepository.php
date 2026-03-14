@@ -29,6 +29,7 @@ class RegisterRepository extends RegisterTenant
                 ->afterStateUpdated(fn (callable $set, ?string $state) => $set('slug', Str::slug((string) $state))),
             TextInput::make('slug')
                 ->required()
+                ->readOnly()
                 ->unique(table: 'repositories'),
             TextInput::make('html_url')
                 ->label('GitHub URL')
