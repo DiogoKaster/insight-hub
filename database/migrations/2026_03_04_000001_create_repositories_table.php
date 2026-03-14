@@ -28,6 +28,7 @@ return new class extends Migration
             $table->timestamp('github_created_at')->nullable();
             $table->timestamp('github_updated_at')->nullable();
             $table->timestamp('synced_at')->nullable();
+            $table->text('github_token')->nullable();
             $table->timestamps();
         });
     }

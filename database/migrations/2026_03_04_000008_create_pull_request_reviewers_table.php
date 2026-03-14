@@ -13,6 +13,7 @@ return new class extends Migration
         Schema::create('pull_request_reviewers', function (Blueprint $table): void {
             $table->foreignUuid('pull_request_id')->constrained();
             $table->foreignUuid('github_user_id')->constrained('github_users');
+            $table->string('state')->nullable();
             $table->primary(['pull_request_id', 'github_user_id']);
         });
     }

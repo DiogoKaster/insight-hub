@@ -19,6 +19,13 @@ return new class extends Migration
             $table->string('title');
             $table->text('body')->nullable();
             $table->string('state');
+            $table->boolean('draft')->default(false);
+            $table->unsignedInteger('additions')->nullable();
+            $table->unsignedInteger('deletions')->nullable();
+            $table->unsignedInteger('changed_files')->nullable();
+            $table->unsignedInteger('commits_count')->nullable();
+            $table->unsignedInteger('comments_count')->nullable();
+            $table->unsignedInteger('review_comments_count')->nullable();
             $table->string('html_url');
             $table->timestamp('merged_at')->nullable();
             $table->timestamp('closed_at')->nullable();
