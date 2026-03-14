@@ -12,4 +12,10 @@ pest()->extend(TestCase::class)
 pest()->extend(TestCase::class)
     ->use(LazilyRefreshDatabase::class)
     ->group('feature')
-    ->in('Feature', '../app-modules/*/tests/Feature');
+    ->in(
+        'Feature',
+        '../app-modules/*/tests/Feature',
+        '../app-modules/*/tests/Services',
+        '../app-modules/*/tests/Jobs',
+        '../app-modules/*/tests/Observers',
+    );

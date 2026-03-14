@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\DB;
 use InsightHub\Repository\Models\Issue;
 use InsightHub\Repository\Models\Label;
 use InsightHub\Repository\Models\PullRequest;
@@ -49,4 +50,16 @@ it('has many labels', function (): void {
     Label::factory()->count(5)->for($repository)->create();
 
     expect($repository->labels)->toHaveCount(5);
+});
+
+it('stores github_token encrypted', function (): void {
+    $repository = Repository::factory()->create(['github_token' => 'ghp_supersecret']);
+
+    $fresh = Repository::find($repository->id);
+    expect($fresh->github_token)->toBe('ghp_supersecret');
+
+    $raw = DB::table('repositories')
+        ->where('id', $repository->id)
+        ->value('github_token');
+    expect($raw)->not->toBe('ghp_supersecret');
 });
