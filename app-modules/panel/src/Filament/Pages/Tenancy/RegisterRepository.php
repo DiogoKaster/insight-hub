@@ -34,6 +34,11 @@ class RegisterRepository extends RegisterTenant
             TextInput::make('html_url')
                 ->label('GitHub URL')
                 ->placeholder('https://github.com/owner/repo'),
+            TextInput::make('github_token')
+                ->label('GitHub Token')
+                ->password()
+                ->revealable()
+                ->helperText('Required for private repositories. Needs repo scope.'),
             Textarea::make('description'),
             Toggle::make('is_private'),
         ]);

@@ -26,6 +26,13 @@ class PullRequest extends Model
         'title',
         'body',
         'state',
+        'draft',
+        'additions',
+        'deletions',
+        'changed_files',
+        'commits_count',
+        'comments_count',
+        'review_comments_count',
         'html_url',
         'merged_at',
         'closed_at',
@@ -54,7 +61,8 @@ class PullRequest extends Model
      */
     public function reviewers(): BelongsToMany
     {
-        return $this->belongsToMany(GitHubUser::class, 'pull_request_reviewers', 'pull_request_id', 'github_user_id');
+        return $this->belongsToMany(GitHubUser::class, 'pull_request_reviewers', 'pull_request_id', 'github_user_id')
+            ->withPivot('state');
     }
 
     /**
@@ -75,6 +83,13 @@ class PullRequest extends Model
         return [
             'github_id' => 'integer',
             'number' => 'integer',
+            'draft' => 'boolean',
+            'additions' => 'integer',
+            'deletions' => 'integer',
+            'changed_files' => 'integer',
+            'commits_count' => 'integer',
+            'comments_count' => 'integer',
+            'review_comments_count' => 'integer',
             'merged_at' => 'datetime',
             'closed_at' => 'datetime',
             'github_created_at' => 'datetime',

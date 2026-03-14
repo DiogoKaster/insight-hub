@@ -33,6 +33,7 @@ class Repository extends Model
         'open_issues_count',
         'github_created_at',
         'github_updated_at',
+        'github_token',
     ];
 
     public function getRouteKeyName(): string
@@ -95,6 +96,7 @@ class Repository extends Model
             'open_issues_count' => 'integer',
             'github_created_at' => 'datetime',
             'github_updated_at' => 'datetime',
+            'github_token' => 'encrypted',
         ];
     }
 }
