@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use InsightHub\Admin\Filament\Resources\RepositoryResource\Pages\CreateRepository;
 use InsightHub\Admin\Filament\Resources\RepositoryResource\Pages\EditRepository;
 use InsightHub\Admin\Filament\Resources\RepositoryResource\Pages\ListRepositories;
+use InsightHub\Repository\Jobs\SyncRepositoryJob;
 use InsightHub\Repository\Models\Repository;
 
 class RepositoryResource extends Resource
@@ -69,6 +70,14 @@ class RepositoryResource extends Resource
                     ->icon(Heroicon::ArrowTopRightOnSquare)
                     ->url(fn (Repository $record): string => route('filament.app.pages.dashboard', ['tenant' => $record->getRouteKey()]))
                     ->openUrlInNewTab(),
+                Action::make('sync')
+                    ->label('Sync')
+                    ->icon(Heroicon::ArrowPath)
+                    ->requiresConfirmation()
+                    ->modalHeading('Sync Pull Requests')
+                    ->modalDescription('This will fetch all pull requests from GitHub for this repository. It may take a few minutes.')
+                    ->action(fn (Repository $record) => dispatch(new SyncRepositoryJob($record)))
+                    ->successNotificationTitle('Sync queued'),
                 EditAction::make(),
                 DeleteAction::make(),
             ]);
