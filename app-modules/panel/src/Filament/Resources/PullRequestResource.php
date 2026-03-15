@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace InsightHub\Panel\Filament\Resources;
 
 use BackedEnum;
-use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -18,6 +18,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use InsightHub\Panel\Filament\Resources\PullRequestResource\Pages\ListPullRequests;
 use InsightHub\Panel\Filament\Resources\PullRequestResource\Pages\ViewPullRequest;
 use InsightHub\Repository\Models\PullRequest;
@@ -30,11 +31,26 @@ class PullRequestResource extends Resource
 
     protected static ?string $tenantOwnershipRelationshipName = 'repository';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
     public static function infolist(Schema $schema): Schema
     {
         return $schema->components([
             Grid::make(3)->schema([
-                Grid::make(1)->columnSpan(2)->schema([
+                Group::make([
                     Section::make('Description')
                         ->schema([
                             TextEntry::make('body')
@@ -72,7 +88,7 @@ class PullRequestResource extends Resource
                                 ->schema([
                                     TextEntry::make('login')
                                         ->label('Reviewer')
-                                        ->url(fn ($record) => $record->html_url)
+                                        ->url(fn (Model $record): string => $record->html_url ?? '#')
                                         ->openUrlInNewTab(),
                                     TextEntry::make('pivot.state')
                                         ->label('Decision')
@@ -86,9 +102,9 @@ class PullRequestResource extends Resource
                                 ])
                                 ->columns(2),
                         ]),
-                ]),
+                ])->columnSpan(2),
 
-                Grid::make(1)->columnSpan(1)->schema([
+                Group::make([
                     Section::make('Details')
                         ->schema([
                             TextEntry::make('number')
@@ -138,14 +154,9 @@ class PullRequestResource extends Resource
                                 ->label('Last updated')
                                 ->since(),
                         ]),
-                ]),
-            ]),
+                ])->columnSpan(1),
+            ])->columnSpanFull(),
         ]);
-    }
-
-    public static function form(Schema $schema): Schema
-    {
-        return $schema->components([]);
     }
 
     public static function table(Table $table): Table
@@ -210,9 +221,6 @@ class PullRequestResource extends Resource
                         '1' => 'Draft',
                         '0' => 'Ready',
                     ]),
-            ])
-            ->recordActions([
-                ViewAction::make(),
             ]);
     }
 
