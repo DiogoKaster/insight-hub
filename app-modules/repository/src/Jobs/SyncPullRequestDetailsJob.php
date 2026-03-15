@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use InsightHub\Repository\Exceptions\GitHubRateLimitException;
 use InsightHub\Repository\Models\GitHubUser;
 use InsightHub\Repository\Models\PullRequest;
 use InsightHub\Repository\Services\GitHubClient;
@@ -25,6 +26,15 @@ class SyncPullRequestDetailsJob implements ShouldQueue
     public function __construct(public readonly PullRequest $pullRequest) {}
 
     public function handle(): void
+    {
+        try {
+            $this->sync();
+        } catch (GitHubRateLimitException $gitHubRateLimitException) {
+            $this->release($gitHubRateLimitException->retryAfter);
+        }
+    }
+
+    private function sync(): void
     {
         $repository = $this->pullRequest->repository;
         $client = new GitHubClient($repository);

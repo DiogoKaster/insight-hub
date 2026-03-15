@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Date;
+use InsightHub\Repository\Exceptions\GitHubRateLimitException;
 use InsightHub\Repository\Models\GitHubUser;
 use InsightHub\Repository\Models\PullRequest;
 use InsightHub\Repository\Models\Repository;
@@ -22,6 +23,10 @@ class SyncPullRequestsJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
+    public int $tries = 5;
+
+    public int $backoff = 30;
+
     public function __construct(
         public readonly Repository $repository,
         public readonly int $page = 1,
@@ -29,6 +34,21 @@ class SyncPullRequestsJob implements ShouldQueue
     ) {}
 
     public function handle(): void
+    {
+        try {
+            $this->sync();
+        } catch (GitHubRateLimitException $gitHubRateLimitException) {
+            $this->release($gitHubRateLimitException->retryAfter);
+        }
+    }
+
+    /** @return array<int, WithoutOverlapping> */
+    public function middleware(): array
+    {
+        return [new WithoutOverlapping(sprintf('pr-sync-%s-%d', $this->repository->id, $this->page))];
+    }
+
+    private function sync(): void
     {
         $cutoff = $this->cutoff ?? now()->subDays(90);
         $data = new GitHubClient($this->repository)->pullRequests($this->page);
@@ -71,11 +91,5 @@ class SyncPullRequestsJob implements ShouldQueue
         if (count($data) === 100 && $lastUpdated->gte($cutoff)) {
             dispatch(new static($this->repository, $this->page + 1, $cutoff));
         }
-    }
-
-    /** @return array<int, WithoutOverlapping> */
-    public function middleware(): array
-    {
-        return [new WithoutOverlapping(sprintf('pr-sync-%s-%d', $this->repository->id, $this->page))];
     }
 }

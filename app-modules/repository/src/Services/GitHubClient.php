@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace InsightHub\Repository\Services;
 
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
+use InsightHub\Repository\Exceptions\GitHubRateLimitException;
 use InsightHub\Repository\Models\Repository;
 use RuntimeException;
 
@@ -25,9 +28,7 @@ class GitHubClient
             'page' => $page,
         ]);
 
-        if (! $response->successful()) {
-            throw new RuntimeException(sprintf('GitHub API error %d: %s', $response->status(), $response->body()));
-        }
+        $this->assertSuccessful($response);
 
         return $response->json();
     }
@@ -38,9 +39,7 @@ class GitHubClient
 
         $response = $this->http()->get(sprintf('/repos/%s/%s/pulls/%d', $owner, $repo, $number));
 
-        if (! $response->successful()) {
-            throw new RuntimeException(sprintf('GitHub API error %d: %s', $response->status(), $response->body()));
-        }
+        $this->assertSuccessful($response);
 
         return $response->json();
     }
@@ -53,11 +52,25 @@ class GitHubClient
             'per_page' => 100,
         ]);
 
-        if (! $response->successful()) {
-            throw new RuntimeException(sprintf('GitHub API error %d: %s', $response->status(), $response->body()));
-        }
+        $this->assertSuccessful($response);
 
         return $response->json();
+    }
+
+    private function assertSuccessful(Response $response): void
+    {
+        if ($response->successful()) {
+            return;
+        }
+
+        if (in_array($response->status(), [403, 429], true) && $response->header('X-RateLimit-Remaining') === '0') {
+            $resetAt = (int) $response->header('X-RateLimit-Reset');
+            $retryAfter = max(60, $resetAt - Date::now()->getTimestamp());
+
+            throw new GitHubRateLimitException($retryAfter);
+        }
+
+        throw new RuntimeException(sprintf('GitHub API error %d: %s', $response->status(), $response->body()));
     }
 
     private function http(): PendingRequest
