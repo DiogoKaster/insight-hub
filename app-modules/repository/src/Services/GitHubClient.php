@@ -64,12 +64,17 @@ class GitHubClient
     {
         $token = $this->repository->github_token ?? config('services.github.token');
 
-        return Http::baseUrl('https://api.github.com')
-            ->withToken((string) $token)
+        $request = Http::baseUrl('https://api.github.com')
             ->withHeaders([
                 'Accept' => 'application/vnd.github+json',
                 'X-GitHub-Api-Version' => '2022-11-28',
             ]);
+
+        if (filled($token)) {
+            return $request->withToken((string) $token);
+        }
+
+        return $request;
     }
 
     /** @return array{string, string} */
